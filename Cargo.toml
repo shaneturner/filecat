@@ -1,6 +1,6 @@
 [package]
 name = "filecat"
-version = "0.9.1"
+version = "0.9.2"
 authors = ["Shane Turner <contact@shaneturner.dev>"]
 edition = "2021"
 description = "A CLI utility to recursively list files with optional filtering, exclusion, and JSON output."
