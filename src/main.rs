@@ -141,8 +141,9 @@ fn main() {
     // Serialize the file list to JSON
     match serde_json::to_string_pretty(&file_list) {
         Ok(json) => {
-            std::fs::write(&args.output, json).expect("Failed to write JSON output");
-            println!("File list written to {}", args.output);
+            let json_with_newline = format!("{}\n", json);
+            std::fs::write(&args.output, json_with_newline).expect("Failed to write JSON output");
+            println!("File list written to: {}", args.output);
         }
         Err(e) => eprintln!("Error serializing to JSON: {}", e),
     }

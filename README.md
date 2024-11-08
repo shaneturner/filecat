@@ -12,28 +12,40 @@
 
 ## Installation
 
+<details>
+  <summary><b> Build from source </b></summary>
+
+**Rust**: Ensure you have Rust installed. You can install Rust using [rustup](https://www.rust-lang.org/tools/install):
+
+```bash
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+```
+
 ### **Build from Source**
 
 1. **Clone the Repository**
 
-   ```bash
-   git clone https://github.com/shaneturner/filecat.git
-   cd filecat
-   ```
+```bash
+git clone https://github.com/shaneturner/filecat.git
+cd filecat
+```
 
 2. **Build the Utility**
 
-   ```bash
-   cargo build --release
-   ```
+```bash
+cargo build --release
+```
 
 3. **Install the Binary**
 
-   Optionally, you can move the binary to a directory in your `PATH`:
+Optionally, you can move the binary to a directory in your `PATH`:
 
-   ```bash
-   sudo mv ./target/release/filecat /usr/local/bin/
-   ```
+```bash
+sudo mv ./target/release/filecat /usr/local/bin/
+
+```
+
+</details>
 
 ## Usage
 
