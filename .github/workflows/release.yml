@@ -24,6 +24,15 @@ jobs:
       - name: Build the project
         run: cargo build --release
 
+      - name: Move executable to OS-specific folder
+        run: |
+          mkdir -p output/${{ matrix.os }}
+          if [[ "${{ matrix.os }}" == "windows-latest" ]]; then
+            mv target/release/filecat.exe output/${{ matrix.os }}/filecat.exe
+          else
+            mv target/release/filecat output/${{ matrix.os }}/filecat
+          fi
+
       - name: Upload Release Asset
         uses: softprops/action-gh-release@v1
         with:
