@@ -1,0 +1,17 @@
+[package]
+name = "filecat"
+version = "0.1.0"
+authors = ["Shane Turner <contact@shaneturner.dev>"]
+edition = "2021"
+description = "A CLI utility to recursively list files with optional filtering, exclusion, and JSON output."
+license = "MIT"
+repository = "https://github.com/shaneturner/filecat"
+homepage = "https://shaneturner.dev"
+documentation = "https://github.com/shaneturner/filecat/blob/main/README.md"
+readme = "README.md"
+
+[dependencies]
+clap = { version = "4.1.8", features = ["derive"] }
+walkdir = "2.3.3"
+serde = { version = "1.0.188", features = ["derive"] }
+serde_json = "1.0.96"
