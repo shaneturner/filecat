@@ -14,10 +14,26 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+
+      - name: Cache Cargo registry
+        uses: actions/cache@v3
+        with:
+          path: ~/.cargo/registry
+          key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-registry-
+
+      - name: Cache Cargo git dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.cargo/git
+          key: ${{ runner.os }}-cargo-git-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-git-
 
       - name: Set up Rust
-        uses: actions-rs/toolchain@v1
+        uses: actions-rust-lang/setup-rust-toolchain@v1
         with:
           toolchain: stable
 
@@ -25,17 +41,29 @@ jobs:
         run: cargo build --release
 
       - name: Move executable to OS-specific folder
+        if: runner.os == 'Windows'
+        run: |
+          New-Item -ItemType Directory -Path output/windows
+          Move-Item target\release\filecat.exe output\windows\filecat.exe
+        shell: pwsh
+
+      - name: Move executable for macOS or Linux
+        if: runner.os != 'Windows'
         run: |
           mkdir -p output/${{ matrix.os }}
-          if [[ "${{ matrix.os }}" == "windows-latest" ]]; then
-            mv target/release/filecat.exe output/${{ matrix.os }}/filecat.exe
+          if [[ "${{ matrix.os }}" == "macos-latest" ]]; then
+            mv target/release/filecat output/macos/filecat
           else
-            mv target/release/filecat output/${{ matrix.os }}/filecat
+            mv target/release/filecat output/linux/filecat
           fi
+        shell: bash
 
-      - name: Upload Release Asset
-        uses: softprops/action-gh-release@v1
+      - name: Create GitHub Release
+        uses: ncipollo/release-action@v1
         with:
-          files: target/release/filecat*
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ github.ref }}
+          name: Release ${{ github.ref }}
+          artifacts: output/**/*
+          draft: false
+          prerelease: false
